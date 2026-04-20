@@ -1,0 +1,1127 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+<meta charset="UTF-8">
+<meta name="viewport" content="width=device-width, initial-scale=1.0">
+<title>Reading Quest — 4th Grade EOG</title>
+<style>
+@import url('https://fonts.googleapis.com/css2?family=Bangers&family=Nunito:wght@400;600;700;800;900&display=swap');
+
+:root {
+  --bg: #0f0c29;
+  --bg2: #1a1542;
+  --card: #1e1b4b;
+  --card2: #2d2a6e;
+  --green: #22c55e;
+  --green2: #16a34a;
+  --red: #ef4444;
+  --red2: #dc2626;
+  --yellow: #fbbf24;
+  --blue: #38bdf8;
+  --purple: #a78bfa;
+  --pink: #f472b6;
+  --white: #f0f0ff;
+  --muted: #8b8bc0;
+  --radius: 16px;
+}
+
+* { box-sizing: border-box; margin: 0; padding: 0; }
+
+body {
+  font-family: 'Nunito', sans-serif;
+  background: var(--bg);
+  color: var(--white);
+  min-height: 100vh;
+  overflow-x: hidden;
+}
+
+/* ── STARS BACKGROUND ── */
+body::before {
+  content: '';
+  position: fixed;
+  inset: 0;
+  background-image:
+    radial-gradient(1px 1px at 20% 30%, white 0%, transparent 100%),
+    radial-gradient(1px 1px at 80% 10%, white 0%, transparent 100%),
+    radial-gradient(1.5px 1.5px at 50% 60%, #a78bfa 0%, transparent 100%),
+    radial-gradient(1px 1px at 10% 80%, white 0%, transparent 100%),
+    radial-gradient(1px 1px at 90% 70%, #38bdf8 0%, transparent 100%),
+    radial-gradient(1px 1px at 35% 15%, white 0%, transparent 100%),
+    radial-gradient(1px 1px at 65% 85%, white 0%, transparent 100%),
+    radial-gradient(1.5px 1.5px at 75% 45%, #fbbf24 0%, transparent 100%);
+  pointer-events: none;
+  z-index: 0;
+}
+
+/* ── SCREENS ── */
+.screen { display: none; min-height: 100vh; position: relative; z-index: 1; }
+.screen.active { display: flex; flex-direction: column; }
+
+/* ══ WELCOME SCREEN ══════════════════════════════════════════════ */
+#welcome {
+  align-items: center;
+  justify-content: center;
+  padding: 30px 20px;
+  text-align: center;
+}
+
+.logo-wrap {
+  margin-bottom: 24px;
+  animation: floatBob 3s ease-in-out infinite;
+}
+@keyframes floatBob {
+  0%,100% { transform: translateY(0); }
+  50% { transform: translateY(-12px); }
+}
+.logo-icon { font-size: 80px; filter: drop-shadow(0 0 20px #a78bfa); }
+
+.game-title {
+  font-family: 'Bangers', cursive;
+  font-size: 3.5rem;
+  letter-spacing: 3px;
+  line-height: 1;
+  background: linear-gradient(135deg, #fbbf24, #f472b6, #a78bfa, #38bdf8);
+  -webkit-background-clip: text;
+  -webkit-text-fill-color: transparent;
+  background-clip: text;
+  text-shadow: none;
+  filter: drop-shadow(0 0 30px rgba(167,139,250,0.5));
+  margin-bottom: 8px;
+}
+.game-subtitle {
+  font-size: 1rem;
+  color: var(--muted);
+  font-weight: 700;
+  margin-bottom: 32px;
+  letter-spacing: 2px;
+  text-transform: uppercase;
+}
+
+.stats-preview {
+  display: flex;
+  gap: 16px;
+  margin-bottom: 32px;
+  flex-wrap: wrap;
+  justify-content: center;
+}
+.stat-chip {
+  background: var(--card2);
+  border: 2px solid var(--purple);
+  border-radius: 30px;
+  padding: 8px 18px;
+  font-size: 0.85rem;
+  font-weight: 800;
+  color: var(--purple);
+}
+
+.missions-preview {
+  display: flex;
+  flex-direction: column;
+  gap: 10px;
+  margin-bottom: 32px;
+  width: 100%;
+  max-width: 400px;
+}
+.mission-chip {
+  display: flex;
+  align-items: center;
+  gap: 12px;
+  background: var(--card);
+  border-radius: 12px;
+  padding: 12px 16px;
+  font-weight: 800;
+  font-size: 0.9rem;
+  border: 1.5px solid var(--card2);
+}
+.mission-icon { font-size: 1.4rem; }
+.mission-label { flex: 1; text-align: left; }
+.mission-qs { font-size: 0.75rem; color: var(--muted); font-weight: 700; }
+
+.start-btn {
+  font-family: 'Bangers', cursive;
+  font-size: 1.8rem;
+  letter-spacing: 2px;
+  padding: 16px 56px;
+  background: linear-gradient(135deg, #7c3aed, #4f46e5);
+  color: white;
+  border: 3px solid #a78bfa;
+  border-radius: 50px;
+  cursor: pointer;
+  box-shadow: 0 0 30px rgba(167,139,250,0.4), 0 8px 24px rgba(0,0,0,0.4);
+  transition: all 0.2s;
+  animation: pulseGlow 2s ease-in-out infinite;
+}
+@keyframes pulseGlow {
+  0%,100% { box-shadow: 0 0 30px rgba(167,139,250,0.4), 0 8px 24px rgba(0,0,0,0.4); }
+  50% { box-shadow: 0 0 50px rgba(167,139,250,0.7), 0 8px 32px rgba(0,0,0,0.5); }
+}
+.start-btn:hover { transform: translateY(-3px) scale(1.04); }
+
+/* ══ GAME SCREEN ═════════════════════════════════════════════════ */
+#game { padding: 0; flex-direction: column; }
+
+/* HUD */
+.hud {
+  background: rgba(30,27,75,0.95);
+  backdrop-filter: blur(10px);
+  border-bottom: 2px solid var(--card2);
+  padding: 10px 16px;
+  display: flex;
+  align-items: center;
+  gap: 12px;
+  flex-wrap: wrap;
+  position: sticky;
+  top: 0;
+  z-index: 100;
+}
+.hud-mission {
+  font-family: 'Bangers', cursive;
+  font-size: 1.1rem;
+  letter-spacing: 1px;
+  color: var(--yellow);
+  flex: 1;
+  min-width: 120px;
+}
+.xp-bar-wrap {
+  display: flex;
+  align-items: center;
+  gap: 8px;
+  flex: 2;
+  min-width: 160px;
+}
+.xp-label { font-size: 0.72rem; font-weight: 800; color: var(--purple); white-space: nowrap; }
+.xp-bar-bg {
+  flex: 1;
+  height: 12px;
+  background: var(--bg2);
+  border-radius: 6px;
+  overflow: hidden;
+  border: 1.5px solid var(--card2);
+}
+.xp-bar-fill {
+  height: 100%;
+  background: linear-gradient(90deg, #a78bfa, #f472b6);
+  border-radius: 6px;
+  transition: width 0.5s cubic-bezier(.34,1.56,.64,1);
+  width: 0%;
+}
+.hud-stats {
+  display: flex;
+  gap: 10px;
+  flex-shrink: 0;
+}
+.hud-stat {
+  display: flex;
+  align-items: center;
+  gap: 4px;
+  font-size: 0.82rem;
+  font-weight: 900;
+}
+.hud-stat.correct { color: var(--green); }
+.hud-stat.wrong { color: var(--red); }
+.hud-stat.streak { color: var(--yellow); }
+.streak-fire { font-size: 1rem; }
+
+/* PASSAGE CARD */
+.game-content {
+  flex: 1;
+  max-width: 780px;
+  margin: 0 auto;
+  width: 100%;
+  padding: 20px 16px 60px;
+}
+
+.passage-card {
+  background: linear-gradient(135deg, #1e1b4b, #2d2a6e);
+  border: 2px solid #4338ca;
+  border-radius: var(--radius);
+  padding: 20px;
+  margin-bottom: 16px;
+  position: relative;
+  overflow: hidden;
+}
+.passage-card::before {
+  content: '';
+  position: absolute;
+  top: -50%;
+  right: -20%;
+  width: 200px;
+  height: 200px;
+  background: radial-gradient(circle, rgba(167,139,250,0.1) 0%, transparent 70%);
+  pointer-events: none;
+}
+.passage-header {
+  display: flex;
+  align-items: center;
+  gap: 10px;
+  margin-bottom: 14px;
+  flex-wrap: wrap;
+}
+.passage-type-badge {
+  font-size: 0.7rem;
+  font-weight: 900;
+  padding: 4px 12px;
+  border-radius: 20px;
+  letter-spacing: 1px;
+  text-transform: uppercase;
+}
+.type-fiction { background: rgba(244,114,182,0.2); color: var(--pink); border: 1.5px solid var(--pink); }
+.type-info { background: rgba(56,189,248,0.2); color: var(--blue); border: 1.5px solid var(--blue); }
+.passage-title {
+  font-family: 'Bangers', cursive;
+  font-size: 1.3rem;
+  letter-spacing: 1px;
+  color: var(--white);
+}
+.passage-byline { font-size: 0.78rem; color: var(--muted); font-weight: 700; }
+.passage-text {
+  font-size: 0.93rem;
+  line-height: 1.75;
+  color: #d4d4f0;
+  font-weight: 600;
+}
+.passage-text p { margin-bottom: 10px; }
+.para-num {
+  font-weight: 900;
+  color: var(--yellow);
+  font-size: 0.72rem;
+  margin-right: 4px;
+}
+.passage-text em { color: var(--blue); font-style: italic; }
+.passage-text strong { color: var(--white); }
+
+/* QUESTION CARD */
+.question-card {
+  background: var(--card);
+  border-radius: var(--radius);
+  border: 2px solid var(--card2);
+  margin-bottom: 14px;
+  overflow: hidden;
+  transition: border-color 0.2s;
+  animation: slideIn 0.3s ease;
+}
+@keyframes slideIn {
+  from { opacity: 0; transform: translateY(16px); }
+  to { opacity: 1; transform: translateY(0); }
+}
+.question-card.q-green { border-left: 6px solid var(--green); }
+.question-card.q-red { border-left: 6px solid var(--red); }
+
+.q-header {
+  display: flex;
+  align-items: center;
+  gap: 10px;
+  padding: 11px 16px 9px;
+  border-bottom: 1px solid var(--card2);
+  flex-wrap: wrap;
+}
+.q-num {
+  font-family: 'Bangers', cursive;
+  font-size: 1.1rem;
+  letter-spacing: 1px;
+  color: var(--yellow);
+}
+.q-xp-badge {
+  font-size: 0.68rem;
+  font-weight: 900;
+  padding: 3px 9px;
+  border-radius: 20px;
+  background: rgba(167,139,250,0.2);
+  color: var(--purple);
+  border: 1.5px solid rgba(167,139,250,0.5);
+}
+.q-badge {
+  font-size: 0.68rem;
+  font-weight: 900;
+  padding: 3px 9px;
+  border-radius: 20px;
+  letter-spacing: 0.5px;
+  text-transform: uppercase;
+}
+.badge-green { background: rgba(34,197,94,0.15); color: var(--green); border: 1.5px solid rgba(34,197,94,0.4); }
+.badge-red { background: rgba(239,68,68,0.15); color: var(--red); border: 1.5px solid rgba(239,68,68,0.4); }
+.q-skill { margin-left: auto; font-size: 0.68rem; color: var(--muted); font-weight: 700; }
+
+.q-body { padding: 14px 16px 16px; }
+.q-text {
+  font-size: 0.97rem;
+  font-weight: 800;
+  line-height: 1.55;
+  margin-bottom: 14px;
+  color: var(--white);
+}
+.q-quote {
+  background: rgba(56,189,248,0.1);
+  border-left: 3px solid var(--blue);
+  padding: 8px 14px;
+  margin: 8px 0 14px;
+  border-radius: 0 8px 8px 0;
+  font-size: 0.9rem;
+  line-height: 1.6;
+  color: #c4e4f8;
+  font-style: italic;
+  font-weight: 600;
+}
+
+.choices {
+  display: grid;
+  grid-template-columns: 1fr 1fr;
+  gap: 9px;
+}
+@media (max-width: 480px) { .choices { grid-template-columns: 1fr; } }
+
+.choice-btn {
+  display: flex;
+  align-items: flex-start;
+  gap: 10px;
+  padding: 12px 14px;
+  border: 2px solid var(--card2);
+  border-radius: 12px;
+  background: var(--bg2);
+  cursor: pointer;
+  font-family: 'Nunito', sans-serif;
+  font-size: 0.88rem;
+  font-weight: 700;
+  color: var(--white);
+  transition: all 0.15s;
+  text-align: left;
+  line-height: 1.4;
+}
+.choice-btn:hover:not(:disabled) {
+  border-color: var(--purple);
+  background: rgba(167,139,250,0.15);
+  transform: scale(1.02);
+  box-shadow: 0 0 14px rgba(167,139,250,0.2);
+}
+.choice-btn:disabled { cursor: default; }
+.choice-btn.correct {
+  border-color: var(--green);
+  background: rgba(34,197,94,0.15);
+  color: var(--green);
+  animation: correctPop 0.4s cubic-bezier(.34,1.56,.64,1);
+}
+@keyframes correctPop {
+  0% { transform: scale(1); }
+  50% { transform: scale(1.06); }
+  100% { transform: scale(1); }
+}
+.choice-btn.wrong {
+  border-color: var(--red);
+  background: rgba(239,68,68,0.15);
+  color: var(--red);
+  animation: wrongShake 0.4s ease;
+}
+@keyframes wrongShake {
+  0%,100% { transform: translateX(0); }
+  25% { transform: translateX(-6px); }
+  75% { transform: translateX(6px); }
+}
+.choice-btn.reveal {
+  border-color: var(--green);
+  background: rgba(34,197,94,0.08);
+  color: rgba(34,197,94,0.7);
+}
+.choice-letter {
+  font-family: 'Bangers', cursive;
+  font-size: 1rem;
+  letter-spacing: 0.5px;
+  min-width: 20px;
+  flex-shrink: 0;
+}
+
+.feedback {
+  margin-top: 12px;
+  padding: 10px 14px;
+  border-radius: 10px;
+  font-size: 0.87rem;
+  font-weight: 700;
+  display: none;
+  line-height: 1.5;
+  animation: feedbackSlide 0.25s ease;
+}
+@keyframes feedbackSlide {
+  from { opacity: 0; transform: translateY(-6px); }
+  to { opacity: 1; transform: translateY(0); }
+}
+.feedback.show { display: block; }
+.feedback.correct { background: rgba(34,197,94,0.15); color: #86efac; border: 1.5px solid rgba(34,197,94,0.4); }
+.feedback.wrong { background: rgba(239,68,68,0.15); color: #fca5a5; border: 1.5px solid rgba(239,68,68,0.4); }
+
+/* XP POPUP */
+.xp-popup {
+  position: fixed;
+  font-family: 'Bangers', cursive;
+  font-size: 1.8rem;
+  letter-spacing: 2px;
+  pointer-events: none;
+  z-index: 999;
+  animation: xpFloat 1.2s ease forwards;
+}
+@keyframes xpFloat {
+  0% { opacity: 1; transform: translateY(0) scale(1); }
+  50% { opacity: 1; transform: translateY(-50px) scale(1.2); }
+  100% { opacity: 0; transform: translateY(-90px) scale(0.8); }
+}
+
+/* MISSION COMPLETE BANNER */
+.mission-banner {
+  background: linear-gradient(135deg, #7c3aed, #4f46e5);
+  border: 2px solid var(--purple);
+  border-radius: var(--radius);
+  padding: 20px;
+  text-align: center;
+  margin: 16px 0;
+  animation: bannerPop 0.5s cubic-bezier(.34,1.56,.64,1);
+}
+@keyframes bannerPop {
+  from { transform: scale(0.8); opacity: 0; }
+  to { transform: scale(1); opacity: 1; }
+}
+.banner-emoji { font-size: 2.5rem; display: block; margin-bottom: 8px; }
+.banner-title { font-family: 'Bangers', cursive; font-size: 1.6rem; letter-spacing: 2px; color: var(--yellow); }
+.banner-sub { font-size: 0.85rem; color: #c4b5fd; font-weight: 700; margin-top: 6px; }
+
+/* NEXT MISSION BTN */
+.next-btn {
+  font-family: 'Bangers', cursive;
+  font-size: 1.3rem;
+  letter-spacing: 2px;
+  padding: 14px 40px;
+  background: linear-gradient(135deg, #059669, #10b981);
+  color: white;
+  border: 2px solid #34d399;
+  border-radius: 30px;
+  cursor: pointer;
+  margin: 0 auto;
+  display: block;
+  box-shadow: 0 0 20px rgba(16,185,129,0.3);
+  transition: all 0.2s;
+}
+.next-btn:hover { transform: translateY(-2px) scale(1.04); box-shadow: 0 0 30px rgba(16,185,129,0.5); }
+
+/* ══ RESULTS SCREEN ══════════════════════════════════════════════ */
+#results {
+  align-items: center;
+  justify-content: center;
+  padding: 30px 20px;
+  text-align: center;
+}
+.results-trophy { font-size: 80px; margin-bottom: 16px; animation: floatBob 3s ease-in-out infinite; }
+.results-title { font-family: 'Bangers', cursive; font-size: 2.8rem; letter-spacing: 3px; color: var(--yellow); margin-bottom: 8px; }
+.results-sub { color: var(--muted); font-weight: 700; margin-bottom: 28px; }
+
+.results-grid {
+  display: grid;
+  grid-template-columns: repeat(2, 1fr);
+  gap: 14px;
+  margin-bottom: 28px;
+  max-width: 380px;
+  width: 100%;
+}
+.result-box {
+  background: var(--card);
+  border: 2px solid var(--card2);
+  border-radius: var(--radius);
+  padding: 18px 12px;
+}
+.result-num { font-family: 'Bangers', cursive; font-size: 2.4rem; letter-spacing: 1px; }
+.result-label { font-size: 0.78rem; font-weight: 800; color: var(--muted); margin-top: 4px; }
+.result-correct .result-num { color: var(--green); }
+.result-wrong .result-num { color: var(--red); }
+.result-xp .result-num { color: var(--purple); }
+.result-streak .result-num { color: var(--yellow); }
+
+.star-rating { font-size: 2.5rem; margin-bottom: 24px; }
+
+.play-again-btn {
+  font-family: 'Bangers', cursive;
+  font-size: 1.5rem;
+  letter-spacing: 2px;
+  padding: 14px 48px;
+  background: linear-gradient(135deg, #7c3aed, #4f46e5);
+  color: white;
+  border: 2px solid var(--purple);
+  border-radius: 30px;
+  cursor: pointer;
+  box-shadow: 0 0 24px rgba(167,139,250,0.3);
+  transition: all 0.2s;
+}
+.play-again-btn:hover { transform: translateY(-2px) scale(1.04); }
+
+/* Progress dots */
+.progress-dots {
+  display: flex;
+  gap: 5px;
+  flex-wrap: wrap;
+  justify-content: center;
+  padding: 10px 16px;
+  max-width: 780px;
+  margin: 0 auto;
+  width: 100%;
+}
+.dot {
+  width: 14px; height: 14px;
+  border-radius: 50%;
+  background: var(--card2);
+  transition: all 0.3s;
+  flex-shrink: 0;
+}
+.dot.correct { background: var(--green); box-shadow: 0 0 6px var(--green); }
+.dot.wrong { background: var(--red); box-shadow: 0 0 6px var(--red); }
+.dot.current { background: var(--yellow); box-shadow: 0 0 8px var(--yellow); animation: dotPulse 1s ease-in-out infinite; }
+@keyframes dotPulse { 0%,100%{transform:scale(1)} 50%{transform:scale(1.4)} }
+</style>
+</head>
+<body>
+
+<!-- ══ WELCOME SCREEN ══ -->
+<div id="welcome" class="screen active">
+  <div class="logo-wrap">
+    <div class="logo-icon">📚</div>
+  </div>
+  <div class="game-title">READING QUEST</div>
+  <div class="game-subtitle">4th Grade EOG · NC Reading Adventure</div>
+
+  <div class="stats-preview">
+    <div class="stat-chip">⚡ 40 Questions</div>
+    <div class="stat-chip">🏆 5 Missions</div>
+    <div class="stat-chip">💎 500 XP to earn</div>
+  </div>
+
+  <div class="missions-preview">
+    <div class="mission-chip"><div class="mission-icon">🛷</div><div class="mission-label">Mission 1: Libby Saves the Team</div><div class="mission-qs">8 questions</div></div>
+    <div class="mission-chip"><div class="mission-icon">✈️</div><div class="mission-label">Mission 2: Amelia Earhart</div><div class="mission-qs">8 questions</div></div>
+    <div class="mission-chip"><div class="mission-icon">👨‍🍳</div><div class="mission-label">Mission 3: Life as a Chef</div><div class="mission-qs">8 questions</div></div>
+    <div class="mission-chip"><div class="mission-icon">🐕</div><div class="mission-label">Mission 4: The Railroad Dog</div><div class="mission-qs">8 questions</div></div>
+    <div class="mission-chip"><div class="mission-icon">🦕</div><div class="mission-label">Mission 5: Dinos in the Dark</div><div class="mission-qs">8 questions</div></div>
+  </div>
+
+  <button class="start-btn" onclick="startGame()">🚀 START QUEST!</button>
+</div>
+
+<!-- ══ GAME SCREEN ══ -->
+<div id="game" class="screen">
+  <div class="hud">
+    <div class="hud-mission" id="hud-mission">Mission 1</div>
+    <div class="xp-bar-wrap">
+      <div class="xp-label">XP <span id="xp-num">0</span></div>
+      <div class="xp-bar-bg"><div class="xp-bar-fill" id="xp-bar"></div></div>
+    </div>
+    <div class="hud-stats">
+      <div class="hud-stat correct">✅ <span id="hud-correct">0</span></div>
+      <div class="hud-stat wrong">❌ <span id="hud-wrong">0</span></div>
+      <div class="hud-stat streak"><span class="streak-fire">🔥</span><span id="hud-streak">0</span></div>
+    </div>
+  </div>
+  <div class="progress-dots" id="progress-dots"></div>
+  <div class="game-content" id="game-content"></div>
+</div>
+
+<!-- ══ RESULTS SCREEN ══ -->
+<div id="results" class="screen">
+  <div class="results-trophy" id="results-trophy">🏆</div>
+  <div class="results-title" id="results-title">QUEST COMPLETE!</div>
+  <div class="results-sub" id="results-sub">You finished the Reading Quest!</div>
+  <div class="star-rating" id="star-rating">⭐⭐⭐⭐⭐</div>
+  <div class="results-grid">
+    <div class="result-box result-correct"><div class="result-num" id="r-correct">0</div><div class="result-label">✅ CORRECT</div></div>
+    <div class="result-box result-wrong"><div class="result-num" id="r-wrong">0</div><div class="result-label">❌ WRONG</div></div>
+    <div class="result-box result-xp"><div class="result-num" id="r-xp">0</div><div class="result-label">💎 TOTAL XP</div></div>
+    <div class="result-box result-streak"><div class="result-num" id="r-streak">0</div><div class="result-label">🔥 BEST STREAK</div></div>
+  </div>
+  <button class="play-again-btn" onclick="restartGame()">🔄 PLAY AGAIN</button>
+</div>
+
+<script>
+// ── DATA ────────────────────────────────────────────────────────────────────
+const missions = [
+  {
+    id:1, icon:'🛷', title:'Libby Saves the Team', author:'by Kristine Nielsen', type:'fiction',
+    passage:`<p><span class="para-num">1</span>Libby had always wanted to go on a sled ride. When her dad finally took her, she was thrilled. The snow sparkled in the sunlight, and the dogs seemed eager to run.</p>
+    <p><span class="para-num">2</span>Her brown eyes peeked out of the fur-lined hood which outlined her round, full face. She held tightly to the sides of the sled with her oversized gloves.</p>
+    <p><span class="para-num">3</span>At first the ride was smooth and gentle. Libby laughed as the wind threw snow in her face. But then the sled picked up speed. The dogs ran through the woods faster than ever.</p>
+    <p><span class="para-num">4</span>Suddenly, on the last turn, her dad was bumped off the sled. Without a driver, the sled raced on. Libby's heart pounded.</p>
+    <p><span class="para-num">5</span>Libby reached out toward the pine trees and grabbed one of the snow-covered branches. She snapped off a twig and swung it between Timber and Tucker, the lead dogs. The dogs slowed, then stopped.</p>
+    <p><span class="para-num">7</span>The dogs' ears stood erect as the team <em>lunged</em> forward again — this time back toward Libby's dad. She reached down for the metal anchor and pushed it over the edge of the sled.</p>
+    <p><span class="para-num">8</span>The sled <em>jolted</em> to a stop right beside her father. He looked up at Libby with shining eyes. "I'm proud of you," he said. "You saved the team."</p>`,
+    questions:[
+      {id:1,color:'green',skill:'Vocabulary',xp:10,
+       text:'What is the meaning of <em>lunged</em> in paragraph 7?',
+       quote:'"The dogs\' ears stood erect as the team lunged forward."',
+       choices:['A. jumped','B. served','C. forced','D. stepped'],answer:'A',
+       explain:'Lunged = moved forward suddenly and powerfully. The dogs surged ahead!'},
+      {id:2,color:'green',skill:'Vocabulary',xp:10,
+       text:'What does <em>jolted</em> mean in paragraph 8?',
+       choices:['A. circled','B. bounced','C. reached','D. stopped'],answer:'B',
+       explain:'Jolted = jerked or bounced suddenly. The sled came to a rough, sudden stop!'},
+      {id:3,color:'green',skill:'Setting',xp:10,
+       text:'Which quote <strong>describes the setting</strong> of the story?',
+       choices:['A. "Her brown eyes peeked out of the fur-lined hood."','B. "She held tightly to the sides of the sled."','C. "Libby reached out toward the pine trees and grabbed one of the snow-covered branches."','D. "She reached down for the metal anchor."'],answer:'C',
+       explain:'Setting = WHERE the story happens. Pine trees + snow-covered branches paint the snowy forest setting!'},
+      {id:4,color:'green',skill:'Character Response',xp:10,
+       text:'Which event <strong>changes</strong> how Libby feels about the sled ride?',
+       choices:['A. Snow gets stirred up all around them.','B. Her dad is bumped off the sled.','C. The wind throws snow in her face.','D. The dogs run faster than ever.'],answer:'B',
+       explain:'Libby was having fun until Dad fell off — THAT\'S the turning point that made it scary!'},
+      {id:5,color:'green',skill:'Key Details',xp:10,
+       text:'Why does Libby swing the pine twig between Timber and Tucker?',
+       choices:['A. To make the dogs start walking','B. To send the dogs into the woods','C. To make the dogs stop running','D. To make the dogs go faster'],answer:'C',
+       explain:'She swung it between the lead dogs to slow them down and get the sled under control. Smart thinking!'},
+      {id:6,color:'green',skill:'Character Traits',xp:10,
+       text:'What does Libby\'s action show about her <strong>character</strong>?',
+       choices:['A. She is brave.','B. She is frightened.','C. She is excited.','D. She is comfortable.'],answer:'A',
+       explain:'Acting fast in a dangerous situation — grabbing a branch, stopping the sled — takes BRAVERY! 💪'},
+      {id:7,color:'green',skill:'Summary',xp:15,
+       text:'Which statement best <strong>summarizes</strong> the text?',
+       choices:['A. Libby and her dad take turns driving the sled.','B. Libby learns how to control a sled pulled by dogs.','C. Libby takes control of the sled when her dad falls off.','D. Libby learns to lead the sled through the trees.'],answer:'C',
+       explain:'Summary = the MAIN thing that happened. Libby taking control after Dad fell off is the key event!'},
+      {id:8,color:'green',skill:'Key Details',xp:10,
+       text:'Why is Libby\'s father proud of her at the end?',
+       choices:['A. Libby wanted to go on a sled ride.','B. Libby saved the dogs and the sled.','C. Libby commanded the dogs to go faster.','D. Libby turned the team to find her dad.'],answer:'B',
+       explain:'Dad says "You saved the team!" — she protected the dogs and sled from danger. 🐕🛷'},
+    ]
+  },
+  {
+    id:2, icon:'✈️', title:'Excerpt from Amelia Earhart', author:'by Rosenthal & Freeman', type:'informational',
+    passage:`<p><span class="para-num">1</span>Amelia Earhart was one of the most famous pilots in history. She was determined to prove that women could fly just as well as men.</p>
+    <p><span class="para-num">2</span>In 1928, Amelia flew across the Atlantic Ocean on a plane called the <em>Friendship</em>. But she was not the pilot — she was only a passenger. Amelia was unhappy because she hadn't actually flown the plane herself.</p>
+    <p><span class="para-num">3</span>Amelia worked hard and became a licensed pilot. In 1929, she started a group called The Ninety-Nines to support women who wanted to become pilots.</p>
+    <p><span class="para-num">8</span><em>Originally</em>, Amelia planned to fly around the equator. She accepted a job at Purdue University as a career counselor, advising women students.</p>
+    <p><span class="para-num">10</span>Eleanor Roosevelt, wife of President Franklin D. Roosevelt, was <em>impressed</em> by Amelia's achievements. Together they gave speeches encouraging women's rights.</p>
+    <p><span class="para-num">12</span>On her final flight, Amelia had a navigator — a guide — named Fred Noonan. In 1937, somewhere over the Pacific Ocean, Amelia's plane disappeared. She was never found.</p>`,
+    questions:[
+      {id:9,color:'green',skill:'Key Details',xp:10,
+       text:'Why was Amelia <strong>unhappy</strong> with her flight on <em>Friendship</em>?',
+       choices:['A. Her landing was not smooth.','B. She did not fly across the Pacific.','C. Her plane disappeared.','D. She was not the pilot.'],answer:'D',
+       explain:'The text says Amelia was "only a passenger" — she hadn\'t actually flown the plane herself!'},
+      {id:10,color:'red',skill:'Text Evidence ⚠️',xp:20,
+       text:'What evidence shows how Amelia <strong>supported</strong> other women who wanted to become pilots?',
+       choices:['A. Amelia wrote books and gave talks about flying.','B. Amelia accepted a job at Purdue University.','C. Amelia gave speeches with Franklin D. Roosevelt.','D. Amelia started the group The Ninety-Nines in 1929.'],answer:'D',
+       explain:'CHALLENGE QUESTION! The text specifically says she started The Ninety-Nines TO SUPPORT women pilots. Direct evidence!'},
+      {id:11,color:'green',skill:'Vocabulary',xp:10,
+       text:'In paragraph 8, what does <em>originally</em> mean?',
+       choices:['A. in the middle','B. at the end','C. in the beginning','D. at a slow rate'],answer:'C',
+       explain:'Originally = "at first" or "in the beginning." Her ORIGINAL plan was to fly around the equator!'},
+      {id:12,color:'green',skill:'Key Details',xp:10,
+       text:'Whose wife made speeches with Amelia Earhart?',
+       choices:['A. Franklin Roosevelt\'s','B. Wilmer Stultz\'s','C. Edwin Elliot\'s','D. Fred Noonan\'s'],answer:'A',
+       explain:'Eleanor Roosevelt — wife of President Franklin D. Roosevelt — gave speeches alongside Amelia!'},
+      {id:13,color:'green',skill:'Vocabulary',xp:10,
+       text:'In paragraph 10, what does <em>impressed</em> mean?',
+       choices:['A. admired','B. disliked','C. forced','D. imitated'],answer:'A',
+       explain:'Impressed = admired or thought highly of someone. Eleanor Roosevelt ADMIRED Amelia\'s achievements!'},
+      {id:14,color:'green',skill:'Cause & Effect',xp:10,
+       text:'Why was Amelia Earhart asked to be a career counselor?',
+       choices:['A. She planned a flight around the world.','B. She encouraged women\'s rights.','C. She knew the president and his wife.','D. She advised women students at Purdue.'],answer:'B',
+       explain:'Amelia was known for encouraging women to reach their goals — that made her perfect for advising young women!'},
+      {id:15,color:'green',skill:'Vocabulary',xp:10,
+       text:'In paragraph 12, what is another word for <em>navigator</em>?',
+       choices:['A. fighter','B. target','C. customer','D. guide'],answer:'D',
+       explain:'The text gives you the answer! It says "a navigator — a guide." The dashes DEFINE the word. 💡'},
+      {id:16,color:'green',skill:'Main Idea',xp:15,
+       text:'What is the <strong>main idea</strong> of the selection?',
+       choices:['A. Amelia and Eleanor Roosevelt gave speeches for women\'s rights.','B. Amelia was the first woman to cross the Atlantic in an airplane.','C. Amelia was a determined pilot who disappeared on a world flight.','D. Amelia became a career counselor who advised women students.'],answer:'C',
+       explain:'Main idea = what the WHOLE text is about. C covers her whole story — determined pilot, amazing career, mysterious disappearance!'},
+    ]
+  },
+  {
+    id:3, icon:'👨‍🍳', title:"What's It Like to Be a Chef?", author:'from Kidsville News!', type:'informational',
+    passage:`<p><em>Bill Justus is the Executive Chef at Hershey Lodge in Hershey, Pennsylvania.</em></p>
+    <p><strong>TRUMAN: What does it take to become a chef?</strong></p>
+    <p><span class="para-num">2</span><strong>CHEF JUSTUS:</strong> First of all, it takes schooling. A good vocational technical school is a great way to see if cooking is really something you'd like to pursue as a profession.</p>
+    <p><strong>TRUMAN: When did you know you wanted to do this for a living?</strong></p>
+    <p><span class="para-num">5</span><strong>CHEF JUSTUS:</strong> I'd always kind of kicked the idea around a little bit. Probably when I went into vocational school is when I really started taking it seriously as a profession.</p>
+    <p><strong>TRUMAN: What exactly do you do as executive chef?</strong></p>
+    <p><span class="para-num">7</span><strong>CHEF JUSTUS:</strong> You have a lot of responsibilities — not only cooking, but scheduling, menu planning, organizing, hiring, training. Budgets and numbers, things of that nature.</p>
+    <p><strong>TRUMAN: What is a typical day like?</strong></p>
+    <p><span class="para-num">9</span><strong>CHEF JUSTUS:</strong> Coming in, going over financial reports, meeting with staff and going over menu development. We have one group coming up soon for 1,300 people. It's a lot of planning ahead.</p>
+    <p><strong>TRUMAN: So when do you actually cook?</strong></p>
+    <p><span class="para-num">13</span><strong>CHEF JUSTUS:</strong> I cook as much as I can. A lot of times, my sous chefs — the assistants — they supervise the line-level staff throughout the day.</p>
+    <p><strong>TRUMAN: What's the best part? The worst?</strong></p>
+    <p><span class="para-num">14-15</span><strong>CHEF JUSTUS:</strong> The creativity — every day it's something different. The hours are the hard part. You work weekends, holidays. My first chef told me: "When everybody is playing, you're working."</p>
+    <p><strong>TRUMAN: What advice for kids interested in becoming a chef?</strong></p>
+    <p><span class="para-num">17</span><strong>CHEF JUSTUS:</strong> Be open-minded. Study. Math, science, all the classes. We use Hershey cocoas as a rub for meats, fish, chicken. We use chocolates as much as we can. The opportunities are wide open.</p>`,
+    questions:[
+      {id:17,color:'green',skill:'Figurative Language',xp:10,
+       text:'What does "kicked the idea around a little bit" mean in paragraph 5?',
+       choices:['A. thought about the idea from time to time','B. wanted to be a professional soccer player','C. did not like making a decision','D. did not like the idea of cooking'],answer:'A',
+       explain:'"Kick an idea around" = think about something occasionally. Chef Justus thought about cooking as a career from time to time!'},
+      {id:18,color:'green',skill:'Key Details',xp:10,
+       text:'Which statement shows being a chef is <strong>more than just cooking</strong>?',
+       choices:['A. "First of all, it takes a little bit of schooling."','B. "People are more educated about cooking."','C. "A typical day is going over financial reports, meeting with staff and going over menu development."','D. "Every day it\'s something different."'],answer:'C',
+       explain:'C shows NON-cooking duties: financial reports, meetings, menu planning. That proves chefs do WAY more than cook!'},
+      {id:19,color:'green',skill:'Vocabulary',xp:10,
+       text:'What does "sous chef" mean in paragraph 13?',
+       choices:['A. planner','B. manager','C. pastry chef','D. assistant chef'],answer:'D',
+       explain:'The text tells you directly! "My sous chefs — the assistants." The dashes = definition. Easy points! 💎'},
+      {id:20,color:'green',skill:'Key Details',xp:10,
+       text:'Why is <strong>creativity</strong> important for a chef?',
+       choices:['A. The chef must enjoy working on weekends.','B. The chef must change the menu for each group served.','C. The chef must plan ahead for large groups.','D. The chef must communicate with all staff.'],answer:'B',
+       explain:'Creativity matters because every day is different — one day box lunches, next day a seven-course dinner for 1,300 people!'},
+      {id:21,color:'green',skill:'Key Details',xp:10,
+       text:'Which statement shows that chefs have <strong>unusual hours</strong>?',
+       choices:['A. "It\'s a lot of planning."','B. "Every day it\'s something different."','C. "When everybody is playing, you\'re working."','D. "We\'re going to have a wide variety of things."'],answer:'C',
+       explain:'"When everybody is PLAYING, you\'re WORKING." That says it all — chefs work when everyone else is off!'},
+      {id:22,color:'green',skill:'Key Details',xp:10,
+       text:'Which statement shows that <strong>chocolate is important</strong> to Chef Justus?',
+       choices:['A. "He comes up with recipes to go on the menus."','B. "I like the dark chocolates."','C. "We use the chocolates as much as we can."','D. "We do a chocolate-barbecued chicken wing."'],answer:'C',
+       explain:'"As much as we can" = they use chocolate constantly, in everything — not just desserts but as a spice rub! That\'s important!'},
+      {id:23,color:'red',skill:'Text Structure ⚠️',xp:20,
+       text:'How does the author show that being an executive chef is <strong>hard work</strong>?',
+       choices:['A. By showing the many different duties of an executive chef every day','B. By describing the many recipes an executive chef makes each season','C. By explaining classes that an executive chef must complete','D. By talking about people who have eaten in his restaurant'],answer:'A',
+       explain:'CHALLENGE! The author LISTS all the duties — scheduling, budgets, hiring, training, planning. All those responsibilities show hard work!'},
+      {id:24,color:'green',skill:'Main Idea',xp:15,
+       text:'What is the <strong>main idea</strong> of this text?',
+       choices:['A. Recipes have to be creative and fun.','B. Chefs do many things besides cooking.','C. Working different hours is part of being a chef.','D. Chocolate can be used in many different recipes.'],answer:'B',
+       explain:'The whole interview shows chefs do budgets, hiring, menu planning, staff management — cooking is just ONE part!'},
+    ]
+  },
+  {
+    id:4, icon:'🐕', title:'A Regular Railroad Dog', author:'by Avis J. Kirsch', type:'fiction',
+    passage:`<p><span class="para-num">1</span>Trigger was a railroad dog right from the start. When Charlie brought him home as a puppy, Trigger seemed to know he belonged at the train station.</p>
+    <p><span class="para-num">2</span>One of Charlie's duties was to turn the switch that directed trains to the right tracks. Trigger went with him each time and stood beside him, watching carefully.</p>
+    <p><span class="para-num">3</span>Hearing those engine whistles all the time, Trigger learned to tell them apart. He knew which whistle meant a train was coming in, and which meant one was heading out.</p>
+    <p><span class="para-num">4</span>Trigger took such an interest in the switching that Charlie made a decision: he taught Trigger to move the switch himself. Trigger scampered along, his curly black ears flopping in the biting wind.</p>
+    <p><span class="para-num">5</span>One winter morning, Charlie discovered a section of track that needed repair. He hurt his knee on the icy ground. When he got to the switch box, he found it frozen solid.</p>
+    <p><span class="para-num">6</span>A train was coming — fast. Charlie scrambled to find the red warning flag and sent Trigger to <em>fetch</em> it from the station.</p>
+    <p><span class="para-num">11</span>Trigger came racing back. But there was no time to wave it. Trigger raced to the tracks and sat proudly on his hind legs in the center of the track, the red flag waving in the wind. The engineer saw him and hit the brakes.</p>
+    <p><span class="para-num">12</span>The train stopped just in time. Trigger had saved everyone on board.</p>`,
+    questions:[
+      {id:25,color:'green',skill:'Key Details',xp:10,
+       text:'Which statement shows that Trigger was a <strong>smart dog</strong>?',
+       choices:['A. "Trigger was a railroad dog right from the start."','B. "One of Charlie\'s duties was to turn the switch."','C. "Hearing those engine whistles, Trigger learned to tell them apart."','D. "Trigger went with Charlie each time and stood beside him."'],answer:'C',
+       explain:'Learning to TELL DIFFERENT WHISTLES APART shows real intelligence — Trigger actually understood the sounds!'},
+      {id:26,color:'green',skill:'Vocabulary',xp:10,
+       text:'What is the meaning of <em>fetch</em> in paragraph 6?',
+       choices:['A. set up','B. run toward','C. give away','D. bring back'],answer:'D',
+       explain:'Fetch = go get something and BRING IT BACK. Charlie sent Trigger to bring back the red warning flag!'},
+      {id:27,color:'green',skill:'Character',xp:10,
+       text:'What does Charlie\'s reaction to the frozen switch show about him?',
+       choices:['A. He is worried.','B. He is surprised.','C. He is frustrated.','D. He is disappointed.'],answer:'A',
+       explain:'A frozen switch + train coming = danger! Charlie would be very worried knowing he can\'t stop what\'s about to happen.'},
+      {id:28,color:'green',skill:'Key Details',xp:10,
+       text:'How did Trigger stop the train from crashing?',
+       choices:['A. He barked at the train driver.','B. He moved the switch.','C. He ran to get the red flag.','D. He ran beside the train.'],answer:'C',
+       explain:'Trigger fetched the red warning flag and sat on the tracks waving it. The engineer saw the signal and hit the brakes! 🚂'},
+      {id:29,color:'green',skill:'Theme',xp:15,
+       text:'Which quote supports the <strong>theme of bravery</strong>?',
+       choices:['A. "Trigger took such an interest in switching that Charlie made a decision."','B. "Charlie discovered a section of track that needed repair."','C. "Trigger scampered along, his curly black ears flopping in the biting wind."','D. "There was Trigger in the center of the track, sitting proudly on his hind legs."'],answer:'D',
+       explain:'BRAVERY = sitting in the middle of the tracks with a train coming! Trigger risked his life to save others. 🐕❤️'},
+      {id:30,color:'green',skill:'Cause & Effect',xp:10,
+       text:'Why does the train almost have an accident?',
+       choices:['A. The switch is frozen.','B. The brakes stop working.','C. The driver is asleep.','D. The station agent is injured.'],answer:'A',
+       explain:'The frozen switch = Charlie can\'t redirect the train to the right track. Without that switch working, disaster is coming!'},
+      {id:31,color:'green',skill:'Plot Connection',xp:10,
+       text:'How does Trigger <strong>learning about trains</strong> help at the end of the story?',
+       choices:['A. He learns how to turn the switch.','B. He is able to save many people\'s lives.','C. He makes the people on the train angry.','D. He is unable to move the switch.'],answer:'B',
+       explain:'Because Trigger learned how trains work and what signals mean, he KNEW exactly what to do in the emergency!'},
+      {id:32,color:'green',skill:'Summary',xp:15,
+       text:'Which statement best <strong>summarizes</strong> the text?',
+       choices:['A. A dog loves to ride a train.','B. A dog stops a train wreck.','C. A man adopts a dog.','D. A man hurts his knee.'],answer:'B',
+       explain:'The whole story builds to ONE big moment — Trigger stopping the crash. That\'s the summary! 🐕🚂💥'},
+    ]
+  },
+  {
+    id:5, icon:'🦕', title:'Dinos in the Dark', author:'by Stephen Whitt', type:'informational',
+    passage:`<p><span class="para-num">1</span>When you think of dinosaurs, do you picture hot swamps or sunny plains? Dinosaurs lived in those places, yes. But some dinosaurs lived in the cold and darkness near the North and South Poles!</p>
+    <p><span class="para-num">2</span>Paleontologists used to believe that dinosaurs lived only in the warmest parts of the world. Later, these scientists began finding bones in surprising places.</p>
+    <p><span class="para-num">3-4</span>One of those surprising fossil beds is Dinosaur Cove, Australia. One hundred million years ago, Australia was connected to Antarctica, near the South Pole. The average temperature was probably around 30°F — like southern Alaska.</p>
+    <p><span class="para-num">5</span>And that's not all. For several months each year, the sun never rose. Dinosaur Cove was <em>plunged</em> into a dark, cold winter night that didn't end until spring.</p>
+    <p><span class="para-num">6</span>In other parts of the world, dinosaurs probably migrated away from the darkness. But at Dinosaur Cove, a huge lake blocked the north, and the ocean blocked the south and east. Warmer places were simply too far away.</p>
+    <p><span class="para-num">7</span>To survive, these dinosaurs had to adapt. Dinosaurs with larger eyes had a better chance — they could see in the dark. Big eyes helped them find evergreen trees (food for plant-eaters) and watch out for predators.</p>
+    <p><span class="para-num">9</span>Some paleontologists wonder if dinosaurs were more like birds than reptiles. If dinosaurs were "warm-blooded," they could have made their own heat — explaining how they survived the cold winters.</p>
+    <p><span class="para-num">12</span>But what if some dinosaurs COULD survive cold polar winters? Could they also survive on a colder planet? Could the descendants of Dinosaur Cove animals have been the last dinosaurs on Earth?</p>
+    <p><span class="para-num">13</span>The wonderful thing about science is that each new answer creates more questions. Be sure to pack a sweater!</p>`,
+    questions:[
+      {id:33,color:'green',skill:'Cause & Effect',xp:10,
+       text:'Why were scientists <strong>surprised</strong> to find dinosaur bones near Antarctica?',
+       choices:['A. They believed dinosaurs could only have survived in warm climates.','B. They believed Australia and Antarctica had different temperatures.','C. They believed dinosaurs migrated away from cold climates.','D. They believed all dinosaurs became extinct because of cold weather.'],answer:'A',
+       explain:'Scientists thought dinos only lived in WARM places. Finding bones near freezing Antarctica flipped everything they knew!'},
+      {id:34,color:'red',skill:'Text Structure ⚠️',xp:20,
+       text:'How does the author describe the <strong>climate</strong> of Dinosaur Cove?',
+       choices:['A. By explaining how dinosaurs had to adapt','B. By comparing it to the weather of Alaska','C. By identifying differences between its location then and now','D. By describing the amount of daylight during different seasons'],answer:'B',
+       explain:'CHALLENGE! The author says it was "like the weather in southern Alaska." Comparing to a KNOWN place helps us understand how cold it was!'},
+      {id:35,color:'green',skill:'Vocabulary',xp:10,
+       text:'What does <em>plunged</em> mean in paragraph 5?',
+       choices:['A. ran toward','B. pushed away','C. fell suddenly','D. walked slowly'],answer:'C',
+       explain:'Plunged = fell or dropped suddenly INTO something. Dinosaur Cove suddenly fell into cold, total darkness!'},
+      {id:36,color:'red',skill:'Text Structure ⚠️',xp:20,
+       text:'How does the author explain the <strong>effect</strong> of living at Dinosaur Cove on the dinosaurs?',
+       choices:['A. By showing that paleontologists found fossil beds there','B. By showing that Dinosaur Cove dinosaurs lived on a peninsula and could not migrate','C. By describing that dinosaurs were like turtles, snakes, and crocodiles','D. By describing that they were the last dinosaurs on Earth'],answer:'B',
+       explain:'CHALLENGE! Being TRAPPED on a peninsula — surrounded by water — forced the dinos to adapt to cold instead of leaving!'},
+      {id:37,color:'green',skill:'Key Details',xp:10,
+       text:'Which statement explains what helped dinosaurs <strong>stay alive in the darkness</strong>?',
+       choices:['A. "Dinosaurs probably migrated away from the winter\'s darkness."','B. "Evergreen trees were food for the plant-eating dinosaurs."','C. "Big eyes helped the dinosaurs watch out for predators."','D. "Warm-blooded dinosaurs could have made their own heat."'],answer:'C',
+       explain:'Key word: "in the DARKNESS." Big eyes helped them SEE in the dark to spot predators — that\'s what kept them alive in darkness specifically!'},
+      {id:38,color:'green',skill:'Key Details',xp:10,
+       text:'Why were Dinosaur Cove dinosaurs <strong>unable to migrate</strong> to a warmer place?',
+       choices:['A. They lived on an island and could not travel.','B. It was too dangerous to migrate.','C. They did not know about warmer places.','D. Warmer places were too far away.'],answer:'D',
+       explain:'The text says "it was too far for most of the animals to migrate." Surrounded by water on three sides, the only exit was too distant!'},
+      {id:39,color:'red',skill:'Author\'s Craft ⚠️',xp:20,
+       text:'How does the author show in paragraph 12 that scientists <strong>may not have all the answers</strong>?',
+       choices:['A. By asking a lot of questions','B. By talking about the extinction of dinosaurs','C. By telling the reader that information is hard to find','D. By using a timeline of events'],answer:'A',
+       explain:'CHALLENGE! Paragraph 12 is FULL of questions — "But what if...? Could they also...? What if...? Could they have been...?" Questions = uncertainty!'},
+      {id:40,color:'green',skill:'Main Idea',xp:15,
+       text:'Which detail <strong>supports the main idea</strong> of the article?',
+       choices:['A. That dinosaurs could see in the dark','B. That dinosaurs could not swim','C. That dinosaurs survived in cold places','D. That dinosaurs migrated to warmer places'],answer:'C',
+       explain:'Main idea = some dinos lived near the poles in cold, dark conditions. C directly supports that — they SURVIVED in cold places! 🦕❄️'},
+    ]
+  }
+];
+
+// ── GAME STATE ───────────────────────────────────────────────────────────────
+let state = {
+  missionIdx: 0,
+  questionIdx: 0,
+  xp: 0,
+  correct: 0,
+  wrong: 0,
+  streak: 0,
+  bestStreak: 0,
+  answered: [],
+  totalQuestions: missions.reduce((a,m) => a + m.questions.length, 0)
+};
+
+const allQuestions = missions.flatMap(m => m.questions);
+
+function showScreen(id) {
+  document.querySelectorAll('.screen').forEach(s => s.classList.remove('active'));
+  document.getElementById(id).classList.add('active');
+}
+
+function startGame() {
+  state = { missionIdx:0, questionIdx:0, xp:0, correct:0, wrong:0, streak:0, bestStreak:0, answered:[], totalQuestions: allQuestions.length };
+  buildProgressDots();
+  showScreen('game');
+  renderMission();
+}
+
+function buildProgressDots() {
+  const wrap = document.getElementById('progress-dots');
+  wrap.innerHTML = '';
+  allQuestions.forEach((q, i) => {
+    const d = document.createElement('div');
+    d.className = 'dot';
+    d.id = `dot-${i}`;
+    wrap.appendChild(d);
+  });
+  updateDot(0, 'current');
+}
+
+function updateDot(globalIdx, status) {
+  const d = document.getElementById(`dot-${globalIdx}`);
+  if (d) { d.className = 'dot ' + status; }
+}
+
+function getGlobalIdx() {
+  let idx = 0;
+  for (let m = 0; m < state.missionIdx; m++) idx += missions[m].questions.length;
+  idx += state.questionIdx;
+  return idx;
+}
+
+function renderMission() {
+  const mission = missions[state.missionIdx];
+  document.getElementById('hud-mission').textContent = `${mission.icon} Mission ${mission.id}`;
+  updateHUD();
+
+  const content = document.getElementById('game-content');
+  content.innerHTML = '';
+
+  // Passage
+  const pCard = document.createElement('div');
+  pCard.className = 'passage-card';
+  const typeClass = mission.type === 'fiction' ? 'type-fiction' : 'type-info';
+  const typeLabel = mission.type === 'fiction' ? '📖 Fiction' : '📰 Informational';
+  pCard.innerHTML = `
+    <div class="passage-header">
+      <span class="passage-type-badge ${typeClass}">${typeLabel}</span>
+      <span class="passage-title">${mission.icon} ${mission.title}</span>
+    </div>
+    <div style="font-size:0.78rem;color:var(--muted);font-weight:700;margin-bottom:12px">${mission.author}</div>
+    <div class="passage-text">${mission.passage}</div>`;
+  content.appendChild(pCard);
+
+  // Tip
+  const tip = document.createElement('div');
+  tip.style.cssText = 'background:rgba(167,139,250,0.1);border:1.5px solid rgba(167,139,250,0.3);border-radius:10px;padding:10px 14px;font-size:0.8rem;font-weight:800;color:#c4b5fd;margin-bottom:14px';
+  tip.textContent = '💡 EOG Tip: Look back at the passage to find your answers! It\'s right there above. 👆';
+  content.appendChild(tip);
+
+  // Render current question
+  renderQuestion();
+}
+
+function renderQuestion() {
+  const mission = missions[state.missionIdx];
+  const q = mission.questions[state.questionIdx];
+  const globalIdx = getGlobalIdx();
+  const content = document.getElementById('game-content');
+
+  // Remove old question if exists
+  const oldQ = document.getElementById('current-question');
+  if (oldQ) oldQ.remove();
+
+  const badgeLabel = q.color === 'green' ? '✅ Should Know' : '🔥 Challenge';
+  const qCard = document.createElement('div');
+  qCard.className = `question-card q-${q.color}`;
+  qCard.id = 'current-question';
+
+  const qText = q.quote
+    ? `${q.text}<div class="q-quote">${q.quote}</div>`
+    : q.text;
+
+  qCard.innerHTML = `
+    <div class="q-header">
+      <span class="q-num">Q${q.id}</span>
+      <span class="q-badge badge-${q.color}">${badgeLabel}</span>
+      <span class="q-xp-badge">+${q.xp} XP</span>
+      <span class="q-skill">${q.skill}</span>
+    </div>
+    <div class="q-body">
+      <div class="q-text">${qText}</div>
+      <div class="choices" id="choices-${q.id}">
+        ${q.choices.map((c,i) => {
+          const L = ['A','B','C','D'][i];
+          return `<button class="choice-btn" id="btn-${q.id}-${L}" onclick="answerQ(${q.id},'${L}',${q.xp})">
+            <span class="choice-letter">${L}</span><span>${c.replace(/^[A-D]\.\s*/,'')}</span>
+          </button>`;
+        }).join('')}
+      </div>
+      <div class="feedback" id="fb-${q.id}"></div>
+    </div>`;
+
+  content.appendChild(qCard);
+  qCard.scrollIntoView({ behavior: 'smooth', block: 'nearest' });
+  updateDot(globalIdx, 'current');
+}
+
+function answerQ(qId, chosen, xpValue) {
+  const mission = missions[state.missionIdx];
+  const q = mission.questions[state.questionIdx];
+  const globalIdx = getGlobalIdx();
+
+  ['A','B','C','D'].forEach(l => {
+    const b = document.getElementById(`btn-${qId}-${l}`);
+    if (b) b.disabled = true;
+  });
+
+  const btn = document.getElementById(`btn-${qId}-${chosen}`);
+  const fb = document.getElementById(`fb-${qId}`);
+  const ok = chosen === q.answer;
+
+  if (ok) {
+    state.correct++;
+    state.streak++;
+    state.xp += xpValue;
+    if (state.streak > state.bestStreak) state.bestStreak = state.streak;
+    btn.classList.add('correct');
+    fb.textContent = (state.streak >= 3 ? `🔥 ${state.streak} IN A ROW! ` : '✅ ') + q.explain;
+    fb.className = 'feedback correct show';
+    showXPPopup(btn, `+${xpValue} XP`, '#a78bfa');
+    updateDot(globalIdx, 'correct');
+  } else {
+    state.wrong++;
+    state.streak = 0;
+    btn.classList.add('wrong');
+    const cb = document.getElementById(`btn-${qId}-${q.answer}`);
+    if (cb) cb.classList.add('reveal');
+    fb.textContent = `❌ Not quite! Answer: ${q.answer}. ${q.explain}`;
+    fb.className = 'feedback wrong show';
+    updateDot(globalIdx, 'wrong');
+  }
+
+  state.answered.push({ id: qId, correct: ok });
+  updateHUD();
+
+  // Next step after 2s
+  setTimeout(() => {
+    const qCard = document.getElementById('current-question');
+    if (state.questionIdx < mission.questions.length - 1) {
+      // Next question in this mission
+      state.questionIdx++;
+      renderQuestion();
+    } else {
+      // Mission complete
+      showMissionComplete();
+    }
+  }, 2200);
+}
+
+function showXPPopup(anchor, text, color) {
+  const rect = anchor.getBoundingClientRect();
+  const pop = document.createElement('div');
+  pop.className = 'xp-popup';
+  pop.textContent = text;
+  pop.style.color = color;
+  pop.style.left = (rect.left + rect.width/2 - 40) + 'px';
+  pop.style.top = (rect.top + window.scrollY - 10) + 'px';
+  document.body.appendChild(pop);
+  setTimeout(() => pop.remove(), 1300);
+}
+
+function showMissionComplete() {
+  const mission = missions[state.missionIdx];
+  const content = document.getElementById('game-content');
+  const oldQ = document.getElementById('current-question');
+  if (oldQ) oldQ.remove();
+
+  const mq = mission.questions.length;
+  const mc = state.answered.slice(-mq).filter(a => a.correct).length;
+
+  const banner = document.createElement('div');
+  banner.className = 'mission-banner';
+  banner.innerHTML = `
+    <span class="banner-emoji">${mc === mq ? '🏆' : mc >= mq*0.75 ? '⭐' : '💪'}</span>
+    <div class="banner-title">MISSION ${mission.id} COMPLETE!</div>
+    <div class="banner-sub">${mc}/${mq} correct · ${state.xp} XP earned so far · 🔥 Streak: ${state.streak}</div>`;
+  content.appendChild(banner);
+
+  if (state.missionIdx < missions.length - 1) {
+    const nextBtn = document.createElement('button');
+    nextBtn.className = 'next-btn';
+    const next = missions[state.missionIdx + 1];
+    nextBtn.textContent = `→ NEXT: ${next.icon} Mission ${next.id}`;
+    nextBtn.onclick = () => {
+      state.missionIdx++;
+      state.questionIdx = 0;
+      const gc = document.getElementById('game-content');
+      gc.innerHTML = '';
+      renderMission();
+    };
+    content.appendChild(nextBtn);
+    banner.scrollIntoView({ behavior: 'smooth', block: 'center' });
+  } else {
+    setTimeout(showResults, 1500);
+  }
+}
+
+function showResults() {
+  const pct = state.correct / state.totalQuestions;
+  const stars = pct >= 0.9 ? '⭐⭐⭐⭐⭐' : pct >= 0.75 ? '⭐⭐⭐⭐' : pct >= 0.6 ? '⭐⭐⭐' : pct >= 0.4 ? '⭐⭐' : '⭐';
+  const trophy = pct >= 0.9 ? '🏆' : pct >= 0.75 ? '🥇' : pct >= 0.6 ? '🥈' : '🎮';
+  const title = pct >= 0.9 ? 'READING LEGEND!' : pct >= 0.75 ? 'QUEST COMPLETE!' : pct >= 0.6 ? 'GOOD JOB!' : 'KEEP PRACTICING!';
+
+  document.getElementById('results-trophy').textContent = trophy;
+  document.getElementById('results-title').textContent = title;
+  document.getElementById('results-sub').textContent = `${state.correct} out of ${state.totalQuestions} correct · You\'re a reading warrior! 📚`;
+  document.getElementById('star-rating').textContent = stars;
+  document.getElementById('r-correct').textContent = state.correct;
+  document.getElementById('r-wrong').textContent = state.wrong;
+  document.getElementById('r-xp').textContent = state.xp;
+  document.getElementById('r-streak').textContent = state.bestStreak;
+  showScreen('results');
+}
+
+function updateHUD() {
+  document.getElementById('hud-correct').textContent = state.correct;
+  document.getElementById('hud-wrong').textContent = state.wrong;
+  document.getElementById('hud-streak').textContent = state.streak;
+  document.getElementById('xp-num').textContent = state.xp;
+  const maxXP = allQuestions.reduce((a,q) => a + q.xp, 0);
+  document.getElementById('xp-bar').style.width = Math.min(100, (state.xp / maxXP) * 100) + '%';
+}
+
+function restartGame() { showScreen('welcome'); }
+</script>
+</body>
+</html>
